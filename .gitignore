@@ -1,0 +1,11 @@
+.Rproj.user
+.Rhistory
+.Rdata
+.rds
+.feather
+.parquet
+.httr-oauth
+.DS_Store
+.quarto
+resultados/
+datos/
