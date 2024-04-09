@@ -9,7 +9,7 @@ Actualmente, el corpus de noticias obtenido supera las 500.000 noticias individu
 
 ## Principales hallazgos
 
-![Resultados preliminares: noticias sobre delincuencia versus estadísticas de delitos reportados](prensa_delincuencia_vs_reporte3b.jpg)
+![Resultados preliminares: noticias sobre delincuencia versus estadísticas de delitos reportados](graficos/prensa_delincuencia_vs_reporte3b.jpg)
 
 _próximamente..._
 
