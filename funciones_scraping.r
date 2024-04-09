@@ -1,9 +1,9 @@
 scraping_prensa <- function(ruta = "modulos/cron_radiopaulina.r") {
-  message(glue("iniciando {ruta} - lubridate::now()"))
+  message(glue("iniciando {ruta} - {lubridate::now()}"))
   
   # glue("scraping/{f}") |> source() |> intentar(f)
   # rstudioapi::jobRunScript(glue("modulos/{ruta}"), workingDir = "/Users/baolea/Documents/Apps Shiny/prensa")
-  rstudioapi::jobRunScript(ruta, workingDir = "/Users/baolea/Documents/Apps Shiny/prensa")
+  rstudioapi::jobRunScript(ruta, workingDir = "/Users/baolea/R/prensa")
 }
 
 
@@ -54,6 +54,7 @@ validar_elementos <- function(input, colapsar = FALSE) {
   }
   
   output <- ifelse(length(input) == 0, NA_character_, input2)
+  
   return(output)
 }
 
@@ -158,55 +159,6 @@ revisar_url <- function(url) {
 # }
 
 # 
-# #para c20 ----
-# scrapear_tabla <- function(data) {
-#   read_html(data$getElementAttribute('innerHTML')[[1]]) %>% 
-#     html_table() |> 
-#     pluck(1)
-# }
-# 
-# desplazarse <- function(remote, data) {
-#   remote$executeScript("arguments[0].scrollIntoView();", args = list(data))
-# }
-# 
-# ubicar_tabla <- function(remote) {
-#   remote$findElement(using="xpath", value="//*[@id='form1']")
-#   Sys.sleep(1)
-# }
-# 
-# ubicar_tabla_css <- function(remote) {
-#   remote$findElement(using="css selector", value="#form1")
-#   Sys.sleep(1)
-# }
-# #form#form1 > div:nth-child(4) > div > div:nth-child(2) > table
-# ubicar_pagina <- function(remote, pagina) {
-#   remote$findElement('xpath', 
-#                      glue::glue('//*[@id="form1"]
-#                                              //*[@id="ContentPlaceHolder1_ContentPlaceHolder1_ContentPlaceHolder1_pager_rptPager_{pagina}"]')) 
-#   Sys.sleep(0.1)
-# }
-# 
-# apretar_boton <- function(remote, data) {
-#   remote$mouseMoveToLocation(webElement = data)
-#   Sys.sleep(0.1)
-#   remote$click()
-# }
-# 
-# pantallazo <- function(remote) {
-#   remote$screenshot(display = TRUE, useViewer = TRUE)
-# }
-# 
-# bajar <- function(remote) {
-#   remote$executeScript("window.scrollBy(0,500);")
-# }
-# 
-# obtener_paginas <- function(remote) {
-#   remote$getPageSource()[[1]] |>
-#     read_html() |> 
-#     html_elements(".paginacion") |>
-#     html_elements("a") |> 
-#     html_text()
-# }
 
 
 
@@ -235,3 +187,41 @@ tramitaciones_limpiar_fechas <- function(data) {
     mutate(fecha_o = fecha,
            fecha = lubridate::ymd(paste(año, mes, dia)))
 }
+
+
+
+limpiar_texto <- function(x) {
+  x |> 
+    tolower() |> 
+    str_replace_all("[[:punct:]]", " ") |> 
+    str_replace_all("[0-9]", " ") |> 
+    str_replace_all("\\||\\<|\\>|@|-|—|\\{|\\}|\\[|\\]|\\=|“", " ") |> 
+    str_trim() |> 
+    str_squish()
+}
+
+
+limpiar_texto_poquito <- function(x) {
+  x |> 
+    str_replace_all("dfp:|\\n|\\r", " ") |> 
+    str_trim() |> 
+    str_squish()
+}
+
+
+revisar_scraping <- function(data) {
+  try({
+  message(paste("listo", deparse(substitute(data)), "-", lubridate::now()))
+  if ("tbl" %in% class(data)) message(paste(nrow(data), "noticias obtenidas"))
+  })
+}
+
+
+# palabras ----
+stopwords <- readr::read_lines("~/Documents/Apps Shiny/lira_popular/datos/stopwords_español.txt") #tidytext::get_stopwords("es") |> pull(word)
+
+palabras_eliminar = c("right", "left", "top", "align", "gnews", "px", "twitter", "com", "pic", "font", "height", "width",
+                      "pred", "fs", "us", "april", "flickr", "datawrapper", "data", "fried", "ftx", "medium", "exante", "server", "family", "loc", "lon", "mag", "prof", "lat", "gpt", "banner", "donación",
+                      "rectangle", "container", "img", "display", "sans", "end", "weight", "content", "rem", "flex", "border", "bottom", "margin", "padding", "center", 
+                      "radius", "text", "síguenos", "solid", "items", "dadada", "droidsans", "justify", "serif", "push", "function", "cmd", "div", "googletag", "ad",
+                      "protected", "email")

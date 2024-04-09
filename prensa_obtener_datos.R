@@ -14,12 +14,6 @@ scraping_prensa("modulos/cron_latercera.r") #hist
 
 scraping_prensa("modulos/cron_meganoticias.r") #hist
 
-scraping_prensa("modulos/cron_24horas.r") #hist
-
-scraping_prensa("modulos/cron_cnnchile.r") #hist
-
-scraping_prensa("modulos/cron_elmostrador.r") #hist
-
 scraping_prensa("modulos/cron_eldinamo.r") #hist
 
 scraping_prensa("modulos/cron_theclinic.r") #hist
@@ -28,13 +22,21 @@ scraping_prensa("modulos/cron_elciudadano.r") #hist
 
 scraping_prensa("modulos/cron_radiouchile.r") #hist
 
+# scraping_prensa("modulos/cron_emol_h.r") #hist
+
+scraping_prensa("modulos/cron_24horas.r") #hist
+
+scraping_prensa("modulos/cron_cnnchile.r") #hist
+
+scraping_prensa("modulos/cron_elmostrador.r") #(requiere selenium)
+
 scraping_prensa("modulos/cron_exante.r") #hist
 
 scraping_prensa("modulos/cron_elsiglo.r") #hist
 
 scraping_prensa("modulos/cron_ciper.r") #hist
 
-scraping_prensa("modulos/cron_emol_h.r") #hist
+scraping_prensa("modulos/cron_diariofinanciero.r") #histórico solo hasta página 20
 
 scraping_prensa("modulos/cron_cooperativa.r")
 
@@ -45,8 +47,6 @@ scraping_prensa("modulos/cron_t13.r")
 scraping_prensa("modulos/cron_agricultura.r")
 
 scraping_prensa("modulos/cron_biobio.r")
-
-scraping_prensa("modulos/cron_diariofinanciero.r")
 
 scraping_prensa("modulos/cron_lahora.r")
 

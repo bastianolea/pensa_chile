@@ -7,9 +7,14 @@ library(furrr)
 library(widyr)
 library(beepr)
 
+tictoc::tic()
+
 # cargar ----
 # source("prensa_calcular_conteo.R")
+
+if (!exists("prensa_palabras_conteo")) {
 prensa_palabras_conteo <- arrow::read_parquet("datos/prensa_palabras_conteo.parquet")
+}
 
 # calcular correlación entre palabras, por noticia
 correlacion <- prensa_palabras_conteo |> 
@@ -21,14 +26,21 @@ correlacion <- prensa_palabras_conteo |>
 # guardar ----
 arrow::write_parquet(correlacion, "datos/prensa_correlacion.parquet")
 
+tictoc::toc()
+
 # pruebas ----
 correlacion |> 
   filter(item1 == "delincuencia") |> 
   arrange(desc(correlation)) |> 
-  head(10)
+  head(30) |> print(n=Inf)
 
 correlacion |> 
   filter(item1 == "robo") |> 
+  arrange(desc(correlation)) |> 
+  head(10)
+
+correlacion |> 
+  filter(item1 == "arma") |> 
   arrange(desc(correlation)) |> 
   head(10)
 
