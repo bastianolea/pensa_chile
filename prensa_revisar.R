@@ -58,19 +58,26 @@ datos_prensa |>
 # gráficos ----
 
 # gráfico noticias por fuente y mes
-datos_prensa |>
+datos_prensa_grafico <- datos_prensa |>
   filter(year(fecha) >= 2019) |> 
-  mutate(fecha = floor_date(fecha, "month")) |> 
+  mutate(fecha = floor_date(fecha, "month"),
+         mes = month(fecha) |> as.integer())
+
+datos_prensa_grafico |> 
   # group_by(fecha) |> 
   # mutate(fuente = forcats::fct_lump_prop(fuente, prop = 0.03, other_level = "otros")) |> 
-  ggplot(aes(fecha, fill = fuente)) +
+  ggplot(aes(as.factor(mes), fill = fuente)) +
   # geom_bar(position = position_dodge2(preserve = "single")) +
   geom_bar(position = position_stack(), color = "white") +
-  scale_x_date(date_breaks = "months", date_labels = "%m", expand = c(0, 0), minor_breaks = NULL) +
-  scale_y_continuous(expand = c(0, 0)) +
+  # scale_x_date(date_breaks = "months", date_labels = "%m", expand = c(0, 0), minor_breaks = NULL) +
+  # scale_x_date(date_breaks = "months", labels = datos_prensa_grafico$mes, expand = c(0, 0), minor_breaks = NULL) +
+  scale_y_continuous(expand = c(0, 0), labels = ~format(.x, big.mark = ".")) +
   theme_minimal() +
-  guides(fill = guide_legend(position = "bottom", ncol = 7)) +
-  labs(y = "noticias", x = NULL, title = "Noticias de medios digitales chilenos") +
+  guides(fill = guide_legend(position = "bottom", ncol = 7, title = NULL)) +
+  labs(y = "noticias", x = NULL, 
+       title = "Noticias en medios digitales chilenos",
+       subtitle = "Cantidad total de noticias obtenidas por mes, según fuente",
+       caption = "Fuente: elaboración propia. Bastián Olea Herrera") +
   facet_grid(~año, space = "free_x", scales = "free_x", switch = "x") +
   theme(strip.text = element_text(margin = margin(t=20)),
         axis.text.x = element_text(margin = margin(t=-25)),
@@ -78,8 +85,8 @@ datos_prensa |>
         legend.margin = margin(t=15), 
         panel.spacing.x = unit(4, "mm"))
 
-ggsave(glue::glue("graficos/datos_prensa_scraping_{today()}_f.jpg"), 
-       width = 10, height = 8)
+ggsave(glue::glue("graficos/datos_prensa_scraping_{today()}_g.png"), 
+       width = 11, height = 8, bg = "white")
 
 
 # gráfico noticias por fuente y año
