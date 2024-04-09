@@ -2,7 +2,7 @@
 # se cargan los datos tokenizados en el paso anterior, se cuenta la frecuencia de palabras por noticia, y se guarda el resultado
 # input: prensa_palabras.feather (paso 2)
 # output: prensa_palabras_conteo.parquet
-# tiempo aprox: 52 minutos
+# tiempo aprox: 55 minutos
 
 library(dplyr)
 library(purrr)
@@ -31,4 +31,3 @@ plan(multisession)
 arrow::write_parquet(prensa_palabras_conteo, "datos/prensa_palabras_conteo.parquet")
 
 tictoc::toc()
-plan(multisession)

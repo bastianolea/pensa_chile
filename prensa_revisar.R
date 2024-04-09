@@ -11,6 +11,23 @@ if (!exists("datos_prensa")) {
 
 # revisar ----
 
+#fuentes sin noticias en años
+conteo_años <- datos_prensa |> 
+  mutate(año = as.factor(año),
+         fuente = as.factor(fuente)) |> 
+  count(año, fuente, .drop = F) |> 
+  print(n=Inf)
+
+conteo_años |> 
+  filter(año == 2020, n == 0)
+
+conteo_años |> 
+  filter(as.numeric(as.character(año)) >= 2019) |> 
+  filter(!fuente %in% c("24horas", "chvnoticias", "lacuarta", 
+                        "biobio", "cooperativa", "diariofinanciero", "agricultura")) |> 
+  ggplot(aes(año, n, fill = fuente)) +
+  geom_col(color = "white")
+
 # noticias sin fecha por fuente
 datos_prensa |>
   filter(is.na(fecha)) |>
@@ -71,9 +88,9 @@ datos_prensa_grafico |>
   geom_bar(position = position_stack(), color = "white") +
   # scale_x_date(date_breaks = "months", date_labels = "%m", expand = c(0, 0), minor_breaks = NULL) +
   # scale_x_date(date_breaks = "months", labels = datos_prensa_grafico$mes, expand = c(0, 0), minor_breaks = NULL) +
-  scale_y_continuous(expand = c(0, 0), labels = ~format(.x, big.mark = ".")) +
+  scale_y_continuous(expand = c(0, 0), labels = ~format(.x, big.mark = ".", decimal.mark = ",")) +
   theme_minimal() +
-  guides(fill = guide_legend(position = "bottom", ncol = 7, title = NULL)) +
+  guides(fill = guide_legend(position = "bottom", ncol = 8, title = NULL)) +
   labs(y = "noticias", x = NULL, 
        title = "Noticias en medios digitales chilenos",
        subtitle = "Cantidad total de noticias obtenidas por mes, según fuente",
@@ -85,21 +102,29 @@ datos_prensa_grafico |>
         legend.margin = margin(t=15), 
         panel.spacing.x = unit(4, "mm"))
 
-ggsave(glue::glue("graficos/datos_prensa_scraping_{today()}_g.png"), 
+ggsave(glue::glue("graficos/datos_prensa_scraping_{today()}_h.png"), 
        width = 11, height = 8, bg = "white")
 
 
-# gráfico noticias por fuente y año
-datos_prensa |>
-  filter(year(fecha) >= 2017) |>
-  mutate(fecha = floor_date(fecha, "year")) |>
+# revisar noticias mensuales, por fuentes y por año
+datos_prensa_grafico |> 
+  filter(año == 2022) |> 
   ggplot(aes(fecha, fill = fuente)) +
-  geom_bar(position = position_dodge2(preserve = "single")) +
-  scale_x_date(date_breaks = "years", date_labels = "%Y", expand = c(0, 0), minor_breaks = NULL) +
-  scale_y_continuous(expand = c(0, 0)) +
+  geom_bar() +
+  scale_x_date(date_breaks = "months", date_labels = "%m", expand = c(0, 0), minor_breaks = NULL) +
+  facet_wrap(~fuente, ncol = 3, axes = "all_x") +
+  guides(fill = guide_none()) +
   theme_minimal() +
-  guides(fill = guide_legend(position = "bottom", ncol = 7)) +
-  labs(y = "noticias", x = "años")
+  theme(axis.text = element_text(size = 7),
+        axis.title = element_blank(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.y = element_blank()) +
+  labs(title = "Noticias mensuales, por fuente, 2024",
+       caption = "Fuente: elaboración propia. Bastián Olea Herrera")
+
+ggsave(glue::glue("graficos/datos_prensa_fuentes_2024_{today()}_a.png"), 
+       width = 11, height = 8, bg = "white")
+
 
 
 conteo_prensa_años <- datos_prensa |>
@@ -110,9 +135,10 @@ conteo_prensa_años <- datos_prensa |>
   mutate(total = sum(n))
 
 conteo_prensa_años |> 
-  filter(total >= 10000) |>
+  filter(total >= 8000) |>
   # filter(total < 10000) |>
   ggplot(aes(año, n, color = fuente)) +
   geom_line(linewidth = 1.5, alpha = .3) +
   geom_point(size = 4, alpha = .8) +
-  guides(color = guide_legend(position = "bottom"))
+  guides(color = guide_legend(position = "bottom")) +
+  theme_minimal()

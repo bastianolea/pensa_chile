@@ -16,19 +16,19 @@ scraping_prensa("modulos/cron_meganoticias.r") #hist
 
 scraping_prensa("modulos/cron_eldinamo.r") #hist
 
+scraping_prensa("modulos/cron_lanacion.r") #hist (pendiente)
+
+scraping_prensa("modulos/cron_publimetro.r") #hist (pendiente)
+
 scraping_prensa("modulos/cron_theclinic.r") #hist
 
 scraping_prensa("modulos/cron_elciudadano.r") #hist
 
 scraping_prensa("modulos/cron_radiouchile.r") #hist
 
-# scraping_prensa("modulos/cron_emol_h.r") #hist
-
 scraping_prensa("modulos/cron_24horas.r") #hist
 
 scraping_prensa("modulos/cron_cnnchile.r") #hist
-
-scraping_prensa("modulos/cron_elmostrador.r") #(requiere selenium)
 
 scraping_prensa("modulos/cron_exante.r") #hist
 
@@ -36,7 +36,13 @@ scraping_prensa("modulos/cron_elsiglo.r") #hist
 
 scraping_prensa("modulos/cron_ciper.r") #hist
 
+# scraping_prensa("modulos/cron_emol_h.r") #hist pero por meses
+
 scraping_prensa("modulos/cron_diariofinanciero.r") #histórico solo hasta página 20
+
+scraping_prensa("modulos/cron_elmostrador.r") #(requiere selenium)
+
+# scraping_prensa("modulos/cron_lacuarta.r") #histórico solo hasta página 9
 
 scraping_prensa("modulos/cron_cooperativa.r")
 

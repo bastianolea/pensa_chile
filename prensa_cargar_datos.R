@@ -5,7 +5,7 @@
 # finalmente, se cargan las partes preprocesadas y se escriben como una sola base.
 # input: archivos rds individuales de la carpeta resultados
 # output: prensa_datos.feather
-# tiempo estimado: 30 minutos aprox.
+# tiempo estimado: 34 minutos aprox.
 
 tictoc::tic()
 
@@ -68,7 +68,7 @@ modulos_cargados <- future_map(archivos_modulos, \(archivo_modulo) {
     list_rbind()
   
   return(datos)
-}); beepr::beep()
+})
 
 
 # map(modulos_cargados, nrow)
