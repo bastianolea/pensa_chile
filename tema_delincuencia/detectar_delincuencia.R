@@ -8,18 +8,37 @@ library(slider)
 if (!exists("prensa_palabras_conteo")) prensa_palabras_conteo <- arrow::read_parquet("datos/prensa_palabras_conteo.parquet")
 
 # definir conceptos para temas ----
-palabras_delincuencia = c("homicidio", "homicidios", "asesinato", "asesinatos", "asesinó", 
-                          "hurto", "hurtos", "hurtó", "hurtaron",
-                          "robo", "robos", "robar", "robando", "robaron",
-                          "asalto", "asaltaron", "asaltar", "asaltó", "asaltantes", "asaltante",
-                          "arma", "armas", "calibre", "pistola", "revolver", "revólver",
-                          "secuestro", "secuestro", "secuestrado", "secuestran",
-                          "delito", "delitos", "delincuencia", 
-                          "delincuente", "delincuentes", "ladrón", "ladrones", "antisocial", "antisociales",
-                          "crimen", "criminal", "criminales", 
-                          "narcotráfico", "narco", "droga",
-                          "barricada", "protesta", "saqueo", "saquearon",
-                          "ebriedad", "ebrio", "ebria", "desórdenes", "incivilidad", "incivilidades"
+# palabras_delincuencia = c("homicidio", "homicidios", "asesinato", "asesinatos", "asesinó", 
+#                           "hurto", "hurtos", "hurtó", "hurtaron",
+#                           "robo", "robos", "robar", "robando", "robaron",
+#                           "asalto", "asaltaron", "asaltar", "asaltó", "asaltantes", "asaltante",
+#                           "arma", "armas", "calibre", "pistola", "revolver", "revólver",
+#                           "secuestro", "secuestro", "secuestrado", "secuestran",
+#                           "delito", "delitos", "delincuencia", 
+#                           "delincuente", "delincuentes", "ladrón", "ladrones", "antisocial", "antisociales",
+#                           "crimen", "criminal", "criminales", 
+#                           "narcotráfico", "narco", "droga",
+#                           "barricada", "protesta", "saqueo", "saquearon",
+#                           "ebriedad", "ebrio", "ebria", "desórdenes", "incivilidad", "incivilidades"
+# )
+
+# en base a correlaciones
+palabras_delincuencia = c(
+  # robo
+  c("intimidación", "delincuentes", "robos",
+    "antisociales", "encargo", "carabineros", "habitado", "receptación"),
+  # asalto
+  c("asaltantes", "delincuentes", "antisociales", "robo", "violento", 
+    "intimidaron", "vehículo", "arma", "huyeron"),
+  # delincuencia
+  c("narcotráfico", "seguridad", "inseguridad", "organizado", 
+    "policías", "combatir", "crimen", "violencia", "delincuentes"),
+  #delincuente
+  c("robo", "delincuentes", "sujeto", "arma", "asalto", "robar", 
+    "carabineros", "carabinero", "vehículo", "policial"),
+  # portonazo
+  c("vehículo", "delincuentes", "robo", "antisociales", "auto", 
+    "sujetos", "asaltantes", "intimidaron", "automóvil", "violento")
 )
 
 palabras_homicidios = c("homicidio", "homicidios", "asesinato", "asesinatos", "asesinó", 

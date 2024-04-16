@@ -1,9 +1,17 @@
+library(dplyr)
+library(stringr)
+library(purrr)
+library(furrr)
+library(tidytext)
+library(beepr)
 
-# prensa_palabras <- arrow::read_feather("datos_prensa_palabras.feather")
+tictoc::tic()
+
+# if (!exists("prensa_palabras")) prensa_palabras <- arrow::read_feather("datos/prensa_palabras.feather")
 
 # cargar datos
 # source("prensa_calcular_conteo.R")
-prensa_palabras_conteo <- arrow::read_parquet("datos/prensa_palabras_conteo.parquet")
+if (!exists("prensa_palabras_conteo")) prensa_palabras_conteo <- arrow::read_parquet("datos/prensa_palabras_conteo.parquet")
 
 # crear document text matrix ----
 prensa_dtm <- tidytext::cast_dtm(data = prensa_palabras_conteo, 
@@ -18,7 +26,7 @@ readr::write_rds(prensa_dtm, "datos/prensa_palabras_dtm.rds")
 
 
 # modelar temas ----
-prensa_lda <- topicmodels::LDA(prensa_dtm, k = 5)
+prensa_lda <- topicmodels::LDA(prensa_dtm, k = 4)
 
 ## guardar ----
 readr::write_rds(prensa_lda, "datos/prensa_palabras_lda.rds")
@@ -122,3 +130,6 @@ readr::write_rds(prensa_topicos, "datos/prensa_topicos.rds")
 
 # arrow::write_parquet(prensa_palabras_conteo, "datos_prensa_palabras_conteo.feather")
 # prensa_palabras_conteo <- arrow::read_parquet("datos_prensa_palabras_conteo.feather")
+
+beepr::beep()
+tictoc::toc()
