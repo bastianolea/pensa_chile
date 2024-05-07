@@ -5,9 +5,7 @@ library(ggplot2)
 # cargar datos ----
 # source("prensa_cargar_datos.R")
 
-if (!exists("datos_prensa")) {
-  datos_prensa <- arrow::read_feather("datos/prensa_datos.feather")
-}
+if (!exists("datos_prensa")) datos_prensa <- arrow::read_feather("datos/prensa_datos.feather")
 
 # revisar ----
 
@@ -59,6 +57,16 @@ datos_prensa |>
   count(año, fuente) |>
   arrange(fuente, desc(año)) |> 
   print(n=Inf)
+
+# fuentes con mas de 5 años de noticias
+datos_prensa |>
+  count(año, fuente) |>
+  arrange(fuente, desc(año)) |> 
+  group_by(fuente) |> 
+  mutate(n_años = n()) |> 
+  filter(n_años >= 6) |> 
+  pull(fuente) |> 
+  unique() |> dput()
 
 # noticias por mes
 datos_prensa |>
@@ -142,3 +150,10 @@ conteo_prensa_años |>
   geom_point(size = 4, alpha = .8) +
   guides(color = guide_legend(position = "bottom")) +
   theme_minimal()
+
+
+
+# —----
+tc |> tibble::as_tibble() |> 
+  mutate(titulo = stringr::str_trunc(titulo, 50)) |> 
+  select(titulo, fecha)
